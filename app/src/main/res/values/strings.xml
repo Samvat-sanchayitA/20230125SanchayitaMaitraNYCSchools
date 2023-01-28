@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">NYCSchools</string>
+    <string name="nyc_school_list">NYC School List</string>
+    <string name="click_to_see_more">click to see more</string>
+    <string name="go_back">Go Back</string>
+    <string name="overview_title">Overview</string>
+    <string name="address_title">Address</string>
+    <string name="phone_title">Phone</string>
+    <string name="website_title">Website</string>
+    <string name="email_title">Email</string>
+    <string name="sat_reading_score_title">SAT Critical Reading Average Score</string>
+    <string name="sat_math_score_title">SAT Math Average Score</string>
+    <string name="sat_writing_score_title">SAT Writing Average Score</string>
+    <string name="refresh">refresh</string>
+</resources>
