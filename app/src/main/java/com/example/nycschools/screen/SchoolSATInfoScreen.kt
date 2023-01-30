@@ -128,7 +128,7 @@ fun InfoCard(title: String, info: String, imageVector: ImageVector? = null, oncl
                 )
             }
             Text(
-                text = info,
+                text = info, style = typography.body1
             )
         }
     }
@@ -152,26 +152,27 @@ fun ScoreCard(title: String, score: SATScores) {
             Row(modifier = Modifier.padding(8.dp)) {
                 Text(
                     text = stringResource(R.string.sat_reading_score_title),
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(end = 8.dp), style = typography.subtitle1
                 )
-                Text(text = score.readingSATScores)
+                Text(text = score.readingSATScores, style = typography.body1)
 
             }
             Row(modifier = Modifier.padding(8.dp)) {
                 Text(
                     text = stringResource(R.string.sat_math_score_title),
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(end = 8.dp), style = typography.subtitle1
                 )
-                Text(text = score.mathSATScores)
+                Text(text = score.mathSATScores, style = typography.body1)
 
             }
 
             Row(modifier = Modifier.padding(8.dp)) {
                 Text(
                     text = stringResource(R.string.sat_writing_score_title),
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(end = 8.dp),
+                    style = typography . subtitle1
                 )
-                Text(text = score.writingSATScores)
+                Text(text = score.writingSATScores, style = typography.body1)
 
             }
         }
@@ -231,7 +232,7 @@ fun ExpandableCard(title: String, description: String) {
                 Spacer(modifier = Modifier.padding(8.dp))
                 Text(
                     text = description,
-                    style = typography.body2,
+                    style = typography.body1,
                     modifier = Modifier.padding(8.dp)
                 )
             }

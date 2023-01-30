@@ -1,5 +1,6 @@
 package com.example.nycschools.viewModel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nycschools.data.SchoolRepository
@@ -26,6 +27,8 @@ class SchoolListViewModel @Inject constructor(
     val satScores: StateFlow<SATScores?> = _satScores
 
     private val _satList = MutableStateFlow<List<SATScores>>(emptyList())
+
+    private val query = mutableStateOf("")
 
     init {
         getSchoolList()
@@ -64,5 +67,19 @@ class SchoolListViewModel @Inject constructor(
                 _satScores.emit(score)
             }
         }
+    }
+
+    private fun getFilteredSchools(search: String) = viewModelScope.launch {
+        val newText = "%${search.lowercase()}%"
+        val filteredSchool = repository.getFilteredSchools(newText)
+        filteredSchool.collect { list ->
+            val grouped = list.groupBy { it.name[0] }
+            _schoolDirectory.emit(grouped)
+        }
+    }
+
+    fun onQueryChanged(query: String) {
+        this.query.value = query
+        getFilteredSchools(query)
     }
 }

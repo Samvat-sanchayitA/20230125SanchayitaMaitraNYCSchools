@@ -8,17 +8,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.nycschools.R
 import com.example.nycschools.TopAppBarActionButton
@@ -49,17 +52,27 @@ fun SchoolListScreen(viewModel: SchoolListViewModel, navController: NavHostContr
     ) { paddingValues ->
         Column {
             val schoolList by viewModel.schoolDirectory.collectAsState()
+
+            SearchBar(
+                onSearch = {
+                    viewModel.onQueryChanged(it)
+                },
+               onClear = {
+                  viewModel.onQueryChanged("")
+             }
+            )
+
             LazyColumn(modifier = Modifier.padding(paddingValues)) {
                 schoolList.forEach { (initial, contactsForInitial) ->
                     stickyHeader {
-                        Text(
-                            text = initial.toString(),
-                            color = Color.White,
-                            modifier = Modifier
-                                .background(Color.Gray)
-                                .padding(5.dp)
-                                .fillMaxWidth()
-                        )
+                            Text(
+                                text = initial.toString(),
+                                color = Color.White,
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                            )
                     }
 
                     items(contactsForInitial) { school ->
@@ -74,6 +87,57 @@ fun SchoolListScreen(viewModel: SchoolListViewModel, navController: NavHostContr
     }
 }
 
+
+@Composable
+fun SearchBar(
+    onSearch: (String) -> Unit = {},
+    onClear: () -> Unit = {}
+) {
+    var text by rememberSaveable {
+        mutableStateOf("")
+    }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = {
+            text = it
+            onSearch(it)
+        },
+        leadingIcon = {
+            Icon(
+                Icons.Default.Search,
+                contentDescription = stringResource(R.string.search_school),
+                modifier = Modifier
+                    .padding(15.dp)
+                    .size(24.dp)
+            )
+        },
+        trailingIcon = {
+            if (text.isNotEmpty()) {
+                IconButton(
+                    onClick = {
+                        text = ""     // Remove text from TextField when you press the 'X' icon
+                        onClear()
+                    }
+                ) {
+                    Icon(
+                        Icons.Default.Close,
+                        contentDescription = stringResource(R.string.click_to_clear),
+                        modifier = Modifier
+                            .padding(15.dp)
+                            .size(24.dp)
+                    )
+                }
+            }
+        },
+        maxLines = 1,
+        singleLine = true,
+        textStyle = TextStyle(color = Color.Black, fontSize = 22.sp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+    )
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

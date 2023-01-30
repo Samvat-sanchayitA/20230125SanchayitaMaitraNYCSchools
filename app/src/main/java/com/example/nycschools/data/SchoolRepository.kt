@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import com.example.nycschools.data.database.SchoolDatabase
 import com.example.nycschools.data.remote.SchoolApiService
 import com.example.nycschools.model.SATScores
+import com.example.nycschools.model.School
 import com.example.nycschools.util.NetworkHelper
 import com.example.nycschools.util.networkBoundResource
 import kotlinx.coroutines.delay
@@ -60,5 +61,9 @@ class SchoolRepository @Inject constructor(
 
     fun getSATScoresForSchool(schoolDBN: String): Flow<SATScores> {
         return satScoresDao.getScore(schoolDBN)
+    }
+
+    fun getFilteredSchools(searchString: String): Flow<List<School>> {
+        return schoolDao.getSchoolsFiltered(searchString)
     }
 }
